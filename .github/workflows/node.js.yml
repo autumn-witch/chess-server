@@ -26,6 +26,10 @@ jobs:
         uses: pnpm/action-setup@v2.4.0
         with:
           version: latest
+      - name: Wait / Sleep
+        uses: jakejarvis/wait-action@v0.1.1
+        with:
+          time: 20s
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
