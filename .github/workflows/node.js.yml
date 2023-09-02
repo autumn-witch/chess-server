@@ -1,7 +1,5 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: Tests CI
 
 on:
   push:
@@ -15,15 +13,12 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x, 19.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
       - uses: actions/checkout@v3
       - name: Setup PostgreSQL
         uses: Harmon758/postgresql-action@v1.0.0
         with:
-          # Version of PostgreSQL to use
           postgresql version: latest
-          # POSTGRES_DB - name for the default database that is created
           postgresql db: chess
           postgresql user: postgres
           postgresql password: 123
