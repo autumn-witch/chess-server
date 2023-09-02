@@ -11,30 +11,11 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x, 19.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
-    container:
-      image: node:${{ matrix.node-version }}
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: ProjectName
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: ProjectName-test
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v3
       - name: Setup PostgreSQL
@@ -45,7 +26,7 @@ jobs:
           # POSTGRES_DB - name for the default database that is created
           postgresql db: chess
           postgresql user: postgres
-          postgresql password: 123 
+          postgresql password: 123
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
