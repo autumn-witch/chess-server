@@ -28,7 +28,14 @@ export default class UsersController {
   public async logIn({ auth, request }: HttpContextContract): Promise<OpaqueTokenContract<any>> {
     const username = request.input('username')
     const password = request.input('password')
-    return auth.use('api').attempt(username, password)
+    const stayLoggedIn = request.input('stayLoggedIn', false)
+    if (stayLoggedIn) {
+      return auth.use('api').attempt(username, password);
+    }
+    return auth.use('api').attempt(username, password, {
+      expiresIn: '30min'
+    })
+    // todo: check that a token that never expires is still correct after a short time.
   }
 
   public async logOut({ auth }: HttpContextContract) {

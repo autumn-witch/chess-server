@@ -57,6 +57,7 @@ test.group('Sign out', (group) => {
 	test('logging out deletes the token', async ({ assert, client }) => {
 		const { id, username, email } = (await User.findBy('username', 'mae'))!;
 		const response = await client.post('login').form({ username, email, password: '123' });
+
 		const request = client.post('logout');
 		request.bearerToken(response.body().token);
 		await request;
