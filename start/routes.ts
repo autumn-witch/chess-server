@@ -23,3 +23,8 @@ Route.post('users', async (ctx) => {
   const { default: UsersController } = await import('../app/Controllers/Http/UsersController')
   return new UsersController().create(ctx)
 })
+
+Route.post('login', async (ctx) => {
+  const { default: UsersController } = await import('../app/Controllers/Http/UsersController');
+  return new UsersController().logIn(ctx)
+})

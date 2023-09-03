@@ -2,6 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from '../../Models/User'
 
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
+import { OpaqueTokenContract } from '@ioc:Adonis/Addons/Auth'
 
 export default class UsersController {
   public async index({ }: HttpContextContract) { }
@@ -21,6 +22,12 @@ export default class UsersController {
     } catch (error) {
       response.badRequest(error)
     }
+  }
+
+  public async logIn({ auth, request }: HttpContextContract): Promise<OpaqueTokenContract<any>> {
+    const username = request.input('username')
+    const password = request.input('password')
+    return auth.use('api').attempt(username, password)
   }
 
   public async store({ }: HttpContextContract) { }

@@ -3,11 +3,11 @@ import Database from '@ioc:Adonis/Lucid/Database'
 
 test.group('Post requests to /users', async (group) => {
   group.setup(async () => {
-    await Database.rawQuery('truncate table users restart identity');
+    await Database.rawQuery('truncate table users restart identity cascade');
   })
 
   group.teardown(async () => {
-    await Database.rawQuery('truncate table users restart identity');
+    await Database.rawQuery('truncate table users restart identity cascade');
   })
 
   test('bad username returns status 400', async ({ assert, client }) => {
