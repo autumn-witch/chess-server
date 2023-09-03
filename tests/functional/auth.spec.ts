@@ -54,14 +54,15 @@ test.group('Sign out', (group) => {
 		await User.create(userPayload);
 	})
 
-	test('logout', async ({ client }) => {
-		const userPayload = {
-			username: 'mae',
-			password: '123'
-		}
-		const response = await client.post('login').form(userPayload);
-		const request = client.post('logout')
-		const token = response.body().token
-		request.header('Authorization', token)
+	test('logging out deletes the token', async ({ assert, client }) => {
+		const { id, username, email } = (await User.findBy('username', 'mae'))!;
+		const response = await client.post('login').form({ username, email, password: '123' });
+		const request = client.post('logout');
+		request.bearerToken(response.body().token);
+		await request;
+
+		const newTokens = await Database.from('api_tokens').select('*').where('user_id', id);
+		const tokenWasDeleted = newTokens.length === 0;
+		assert.equal(tokenWasDeleted, true);
 	})
 })
