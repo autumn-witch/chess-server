@@ -27,25 +27,19 @@ test.group('Sign in', async (group) => {
 		assert.equal(response.status(), 400);
 	})
 
-	test('using correct credentials returns 200', async ({ assert, client }) => {
+	test('using correct credentials returns status 200 and the token', async ({ assert, client }) => {
 		const userPayload = {
 			username: 'mae',
 			password: '123'
 		}
 		const response = await client.post('login').form(userPayload);
 		assert.equal(response.status(), 200);
-		// todo: disconnect
-	})
-
-	test('using correct credentials returns the token', async ({ client }) => {
-		const userPayload = {
-			username: 'mae',
-			password: '123'
-		}
-		const response = await client.post('login').form(userPayload);
 		response.assertBodyContains({
 			type: 'bearer'
 		});
+
+		const req = client.post('logout');
+		req.header('Authorization', `Bearer ${response.body().token}`)
 	})
 })
 
