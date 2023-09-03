@@ -24,10 +24,22 @@ export default class UsersController {
     }
   }
 
+  // todo move those methods into an auth controller
   public async logIn({ auth, request }: HttpContextContract): Promise<OpaqueTokenContract<any>> {
     const username = request.input('username')
     const password = request.input('password')
     return auth.use('api').attempt(username, password)
+  }
+
+  public async logOut({ auth }: HttpContextContract) {
+    try {
+      await auth.use('api').revoke()
+      return {
+        revoked: true
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   public async store({ }: HttpContextContract) { }
