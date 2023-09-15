@@ -19,6 +19,10 @@
 */
 import Route from '@ioc:Adonis/Core/Route'
 
+Route.get('/', async () => {
+	return { hello: 'world' };
+})
+
 Route.post('users', async (ctx) => {
   const { default: UsersController } = await import('../app/Controllers/Http/UsersController')
   return new UsersController().create(ctx)
