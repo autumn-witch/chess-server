@@ -10,7 +10,6 @@ import type { DatabaseConfig } from '@ioc:Adonis/Lucid/Database'
 
 const Url = require('url-parse');
 const databaseUrl = new Url(Env.get('DATABASE_URL'))
-console.log({databaseUrl})
 const databaseConfig: DatabaseConfig = {
   /*
   |--------------------------------------------------------------------------
@@ -43,7 +42,10 @@ const databaseConfig: DatabaseConfig = {
 				port: Env.get('DB_PORT', databaseUrl.port),
 				user: Env.get('DB_USER', databaseUrl.username),
 				password: Env.get('DB_PASSWORD', databaseUrl.password),
-				database: Env.get('DB_DATABASE', databaseUrl.pathname.substr(1))
+				database: Env.get('DB_DATABASE', databaseUrl.pathname.substr(1)),
+				ssl: {
+      		rejectUnauthorized: false
+    		}
       },
       migrations: {
         naturalSort: true,
